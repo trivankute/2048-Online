@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="app.js"></script>
+    <title>2048</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="info">
+            <h1>2048</h1>
+            <div class="score-container">
+                <h2 class="score-title">
+                    Opponent score
+                </h2>
+                <span id="opponent-score">-1</span>
+            </div>
+            <div class="score-container">
+                <h2 class="score-title">
+                    score
+                </h2>
+                <span id="score">0</span>
+            </div>
+        </div>
+        <p>Join the numbers to get the
+            <b>2048</b>
+        </p>
+        <div class="grid"></div>
+
+    </div>
+</body>
+
+</html>
+
+<!-- chỉ phím tắt, chỉ cách lấy màu -->
