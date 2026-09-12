@@ -11,27 +11,70 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="info">
-            <h1>2048</h1>
-            <div class="score-container">
-                <h2 class="score-title">
-                    Opponent score
-                </h2>
-                <span id="opponent-score">-1</span>
+    <!-- Modal nhập tên -->
+    <div id="name-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>Welcome to 2048!</h2>
+            <p>Enter your name to join the online multiplayer game:</p>
+            <form id="name-form">
+                <input type="text" id="name-input" placeholder="Your nickname" maxlength="15" autocomplete="off" required />
+                <button type="submit" id="join-btn">Join Game</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="main-layout">
+        <!-- Khu vực chơi 2048 -->
+        <div class="game-container">
+            <div class="header">
+                <h1>2048</h1>
+                <div class="scores-wrapper">
+                    <div class="score-container my-score-box">
+                        <span class="score-title" id="player-name-title">You</span>
+                        <span id="score">0</span>
+                    </div>
+                    <div class="score-container best-score-box">
+                        <span class="score-title">Top Score</span>
+                        <span id="best-score">0</span>
+                    </div>
+                </div>
             </div>
-            <div class="score-container">
-                <h2 class="score-title">
-                    score
-                </h2>
-                <span id="score">0</span>
+
+            <div class="game-intro">
+                <p>Join the numbers to get the <b>2048</b> tile!</p>
+                <button id="restart-btn" class="action-btn">New Game</button>
+            </div>
+
+            <div class="grid-wrapper">
+                <div class="grid"></div>
+                <div id="game-message" class="game-message">
+                    <p id="game-message-text"></p>
+                    <button id="retry-btn" class="action-btn">Try again</button>
+                </div>
+            </div>
+
+            <p class="game-instructions">
+                <strong>HOW TO PLAY:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
+            </p>
+        </div>
+
+        <!-- Bảng xếp hạng trực tiếp -->
+        <div class="scoreboard-section">
+            <div class="scoreboard-header">
+                <h2>Live Leaderboard</h2>
+                <span id="online-count" class="online-pill">🟢 0 online</span>
+            </div>
+            <div class="scoreboard-table">
+                <div class="table-head">
+                    <span class="col-rank">Rank</span>
+                    <span class="col-name">Player</span>
+                    <span class="col-score">Score</span>
+                </div>
+                <div id="scoreboard-list" class="table-body">
+                    <div class="empty-scoreboard">Waiting for players...</div>
+                </div>
             </div>
         </div>
-        <p>Join the numbers to get the
-            <b>2048</b>
-        </p>
-        <div class="grid"></div>
-
     </div>
 </body>
 

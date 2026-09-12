@@ -13,55 +13,81 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
-// Phục vụ các file tĩnh (index.html, style.css, script.js...)
-app.use(express.static(path.join(__dirname, 'public'))); 
-// Nếu file index.html nằm ngay ngoài thư mục gốc, đổi thành: app.use(express.static(__dirname));
+// Phục vụ các file tĩnh (index.html, style.css, app.js...)
+app.use(express.static(__dirname));
+if (path.join(__dirname, 'public') !== __dirname) {
+    app.use(express.static(path.join(__dirname, 'public')));
+}
 
-let waitingPlayer = null; // Biến tạm lưu người chơi đang chờ ghép cặp
+// Lưu trữ tất cả người chơi đang kết nối: socket.id => { id, name, score }
+const players = new Map();
+
+function getScoreboard() {
+    return Array.from(players.values())
+        .sort((a, b) => b.score - a.score)
+        .map(p => ({
+            id: p.id,
+            name: p.name,
+            score: p.score
+        }));
+}
+
+function broadcastScoreboard() {
+    io.emit('scoreboardUpdate', {
+        players: getScoreboard(),
+        onlineCount: players.size
+    });
+}
 
 io.on('connection', (socket) => {
     console.log(`Người chơi kết nối: ${socket.id}`);
 
-    // Logic ghép phòng tự động 2 người
-    if (waitingPlayer) {
-        const roomId = `room_${waitingPlayer.id}_${socket.id}`;
-        
-        // Cả 2 người cùng vào phòng
-        socket.join(roomId);
-        waitingPlayer.join(roomId);
+    // Gửi bảng xếp hạng hiện tại cho người mới vào ngay lập tức
+    socket.emit('scoreboardUpdate', {
+        players: getScoreboard(),
+        onlineCount: players.size
+    });
 
-        // Lưu roomId vào instance của socket để dùng sau
-        socket.roomId = roomId;
-        waitingPlayer.roomId = roomId;
+    // Khi người chơi gửi tên để tham gia game
+    socket.on('join', (data) => {
+        const rawName = (typeof data === 'object' && data ? data.name : data) || '';
+        const playerName = String(rawName).trim().slice(0, 20) || 'Anonymous';
 
-        // Thông báo trận đấu bắt đầu
-        io.to(roomId).emit('gameStart', { roomId });
-        console.log(`Phòng ${roomId} đã bắt đầu với 2 người chơi.`);
+        players.set(socket.id, {
+            id: socket.id,
+            name: playerName,
+            score: 0
+        });
 
-        waitingPlayer = null; // Reset hàng chờ
-    } else {
-        waitingPlayer = socket;
-        socket.emit('waiting', 'Đang chờ đối thủ tham gia...');
-    }
+        console.log(`Người chơi "${playerName}" (${socket.id}) đã tham gia phòng.`);
 
-    // Nhận điểm số từ 1 client và gửi sang cho đối thủ
+        socket.emit('joined', {
+            id: socket.id,
+            name: playerName
+        });
+
+        broadcastScoreboard();
+    });
+
+    // Khi người chơi cập nhật điểm
     socket.on('updateScore', (score) => {
-        if (socket.roomId) {
-            // socket.to(roomId) chỉ gửi cho đối thủ trong cùng room, không gửi lại chính mình
-            socket.to(socket.roomId).emit('opponentScoreUpdate', score);
+        const player = players.get(socket.id);
+        if (player) {
+            const numericScore = typeof score === 'number' ? score : (parseInt(score, 10) || 0);
+            player.score = numericScore;
+            broadcastScoreboard();
         }
     });
 
-    // Xử lý khi có người ngắt kết nối
+    // Khi người chơi ngắt kết nối
     socket.on('disconnect', () => {
-        console.log(`Người chơi ngắt kết nối: ${socket.id}`);
-        
-        if (waitingPlayer && waitingPlayer.id === socket.id) {
-            waitingPlayer = null;
-        }
-
-        if (socket.roomId) {
-            socket.to(socket.roomId).emit('opponentLeft', 'Đối thủ đã thoát phòng!');
+        const player = players.get(socket.id);
+        if (player) {
+            console.log(`Người chơi "${player.name}" (${socket.id}) đã rời phòng.`);
+            players.delete(socket.id);
+            broadcastScoreboard();
+        } else {
+            console.log(`Socket ngắt kết nối: ${socket.id}`);
         }
     });
 });

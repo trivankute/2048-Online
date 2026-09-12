@@ -8,5 +8,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.3"
   }
 }

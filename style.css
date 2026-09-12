@@ -1,78 +1,412 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: #faf8ef;
+    color: #776e65;
+    font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 20px 10px;
+    min-height: 100vh;
+}
+
+/* Modal nhập tên */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(238, 228, 218, 0.85);
+    backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
-    font-family: "Clear Sans", Helvetica, serif;
+    align-items: center;
+    z-index: 9999;
 }
 
-h1 {
-    font-size: 80px;
-    line-height: 0.7;
-    color: #776E65;
-    margin: 0;
+.modal-overlay.hidden {
+    display: none;
 }
 
-.container {
-    width: 468px;
-    margin-top: 30px;
+.modal-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 32px 28px;
+    max-width: 380px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 3px solid #bbada0;
 }
 
-.info {
+.modal-card h2 {
+    font-size: 28px;
+    color: #776e65;
+    margin: 0 0 10px 0;
+}
+
+.modal-card p {
+    font-size: 15px;
+    color: #8f7a66;
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+}
+
+#name-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+#name-input {
+    padding: 12px 14px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #776e65;
+    border: 2px solid #bbada0;
+    border-radius: 6px;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+#name-input:focus {
+    border-color: #8f7a66;
+}
+
+#join-btn {
+    background: #8f7a66;
+    color: #f9f6f2;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#join-btn:hover {
+    background: #776e65;
+}
+
+/* Layout chính: Game + Leaderboard */
+.main-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 36px;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+/* Khu vực chơi game */
+.game-container {
+    width: 456px;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
-.grid {
-    width: 456px;
-    height: 456px;
-    background-color: #BBADA0;
+h1 {
+    font-size: 72px;
+    font-weight: bold;
+    line-height: 1;
+    color: #776e65;
+    margin: 0;
+}
+
+.scores-wrapper {
     display: flex;
-    flex-wrap: wrap;
-    /* background-color: #BBADA0; */
-    border: 7px solid #BBADA0;
-    border-radius:6px;
-    margin-top: 20px;
+    gap: 10px;
 }
 
 .score-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    width: fit-content;
-    padding: 0 5px 0 5px;
-    height: 60px;
-    border-radius: 3px;
+    justify-content: center;
+    min-width: 85px;
+    padding: 6px 12px;
+    height: 64px;
+    border-radius: 5px;
+    background-color: #bbada0;
+    color: #ffffff;
+}
+
+.my-score-box {
     background-color: #8f7a66;
-    color: #FFF;
 }
 
 .score-title {
-    font-size:16px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #eee4da;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-#score {
-    font-size:30px;
+#score, #best-score {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.2;
 }
 
-p, h2 {
-    margin:0;
+.game-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.game-intro p {
+    margin: 0;
+    font-size: 16px;
+    color: #776e65;
+}
+
+.action-btn {
+    background: #8f7a66;
+    color: #f9f6f2;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.action-btn:hover {
+    background: #776e65;
+}
+
+/* Bàn cờ Grid */
+.grid-wrapper {
+    position: relative;
+    width: 456px;
+    height: 456px;
+}
+
+.grid {
+    width: 456px;
+    height: 456px;
+    background-color: #bbada0;
+    display: flex;
+    flex-wrap: wrap;
+    border: 7px solid #bbada0;
+    border-radius: 6px;
 }
 
 .grid div {
     width: 100px;
     height: 100px;
-    margin: 7px;
-    border-radius: 3px;
-    background-color: #EEE4DA;
-    color: #AFA192;
+    margin: 5px;
+    border-radius: 4px;
+    background-color: rgba(238, 228, 218, 0.35);
+    color: #776e65;
     font-weight: bold;
-    text-align: center;
-    font-size: 60px;
+    font-size: 45px;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* line-height: 1.6; */
+    user-select: none;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+/* Màu sắc của các ô số 2048 chuẩn */
+.grid div.tile-2    { background-color: #eee4da; color: #776e65; }
+.grid div.tile-4    { background-color: #ede0c8; color: #776e65; }
+.grid div.tile-8    { background-color: #f2b179; color: #f9f6f2; }
+.grid div.tile-16   { background-color: #f59563; color: #f9f6f2; }
+.grid div.tile-32   { background-color: #f67c5f; color: #f9f6f2; }
+.grid div.tile-64   { background-color: #f65e3b; color: #f9f6f2; }
+.grid div.tile-128  { background-color: #edcf72; color: #f9f6f2; font-size: 38px; }
+.grid div.tile-256  { background-color: #edcc61; color: #f9f6f2; font-size: 38px; }
+.grid div.tile-512  { background-color: #edc850; color: #f9f6f2; font-size: 38px; }
+.grid div.tile-1024 { background-color: #edc53f; color: #f9f6f2; font-size: 30px; }
+.grid div.tile-2048 { background-color: #edc22e; color: #f9f6f2; font-size: 30px; box-shadow: 0 0 15px rgba(237, 194, 46, 0.6); }
+.grid div.tile-super{ background-color: #3c3a32; color: #f9f6f2; font-size: 26px; }
+
+/* Thông báo thắng / thua */
+.game-message {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(238, 228, 218, 0.73);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 6px;
+    z-index: 100;
+}
+
+.game-message.game-won {
+    background: rgba(237, 194, 46, 0.5);
+    color: #f9f6f2;
+}
+
+.game-message p {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #776e65;
+}
+
+.game-instructions {
+    margin-top: 18px;
+    font-size: 14px;
+    color: #776e65;
+    line-height: 1.5;
+}
+
+/* Khu vực Bảng xếp hạng trực tiếp (Scoreboard) */
+.scoreboard-section {
+    width: 380px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 3px solid #bbada0;
+    padding: 18px 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.scoreboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee4da;
+}
+
+.scoreboard-header h2 {
+    font-size: 22px;
+    color: #776e65;
+    margin: 0;
+}
+
+.online-pill {
+    font-size: 13px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.scoreboard-table {
+    display: flex;
+    flex-direction: column;
+}
+
+.table-head {
+    display: flex;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #8f7a66;
+    background: #f7f5f0;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.table-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+.col-rank {
+    width: 50px;
+    font-weight: bold;
+}
+
+.col-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 10px;
+}
+
+.col-score {
+    width: 80px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.scoreboard-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: #faf8ef;
+    border: 1px solid #eee4da;
+    font-size: 15px;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.scoreboard-row:hover {
+    background: #f4efe4;
+}
+
+/* Làm nổi bật hàng của người chơi hiện tại */
+.scoreboard-row.is-current-user {
+    background: #fff8e1;
+    border: 2px solid #edc22e;
+    font-weight: bold;
+    color: #5d4037;
+}
+
+.you-badge {
+    background: #8f7a66;
+    color: #ffffff;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.rank-gold {
+    color: #f57f17;
+    font-weight: bold;
+}
+
+.rank-silver {
+    color: #78909c;
+    font-weight: bold;
+}
+
+.rank-bronze {
+    color: #8d6e63;
+    font-weight: bold;
+}
+
+.empty-scoreboard {
+    text-align: center;
+    color: #8f7a66;
+    font-style: italic;
+    padding: 24px 0;
 }
