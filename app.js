@@ -1,11 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io('http://localhost:3000'); // Trỏ về server Express
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+    const API_URL = isLocal ? 'http://localhost:3000' : 'https://two048-online-quo3.onrender.com'; // Thay bằng URL server thực tế khi deploy
+
+    const socket = io('https://two048-online-quo3.onrender.com'); // Trỏ về server Express
     const opponentScoreDisplay = document.querySelector('#opponent-score');
 
     // 1. Khi ghép được phòng
     socket.on('gameStart', (data) => {
         opponentScoreDisplay.innerHTML = '0';
-        console.log('Đã ghép trận thành công!');
+        alert('Đã ghép trận thành công! Bắt đầu chơi nào!');
     });
 
     // 2. Nhận điểm mới từ đối thủ và hiển thị
@@ -17,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('opponentLeft', (message) => {
         alert(message);
         opponentScoreDisplay.innerHTML = '-1';
+        // reload the page to find a new opponent
+        location.reload();
     });
 
 
