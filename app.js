@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const socketUrl = isLocal
         ? (window.location.port === '3000' ? window.location.origin : 'http://localhost:3000')
-        : 'https://trivankute.github.io/2048-Online/';
+        : 'https://two048-online-quo3.onrender.com';
 
     const socket = io(socketUrl);
 
