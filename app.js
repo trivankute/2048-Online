@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let myPlayerName = localStorage.getItem('2048_player_name') || '';
     if (myPlayerName) nameInput.value = myPlayerName;
 
+    
     // ===== 4. Name Form Handler =====
     nameForm.addEventListener('submit', (e) => {
         e.preventDefault();
