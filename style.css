@@ -198,6 +198,9 @@ h1 {
     position: relative;
     width: 456px;
     height: 456px;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .grid {
@@ -238,7 +241,9 @@ h1 {
 .grid div.tile-512  { background-color: #edc850; color: #f9f6f2; font-size: 38px; }
 .grid div.tile-1024 { background-color: #edc53f; color: #f9f6f2; font-size: 30px; }
 .grid div.tile-2048 { background-color: #edc22e; color: #f9f6f2; font-size: 30px; box-shadow: 0 0 15px rgba(237, 194, 46, 0.6); }
-.grid div.tile-super{ background-color: #3c3a32; color: #f9f6f2; font-size: 26px; }
+.grid div.tile-4096 { background-color: #ed4055; color: #f9f6f2; font-size: 26px; box-shadow: 0 0 15px rgba(237, 64, 85, 0.5); }
+.grid div.tile-8192 { background-color: #72c4ed; color: #f9f6f2; font-size: 26px; box-shadow: 0 0 15px rgba(114, 196, 237, 0.5); }
+.grid div.tile-super{ background-color: #3c3a32; color: #f9f6f2; font-size: 22px; box-shadow: 0 0 20px rgba(60, 58, 50, 0.6); }
 
 /* Thông báo thắng / thua */
 .game-message {
