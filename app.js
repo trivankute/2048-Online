@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const socketUrl = isLocal
         ? (window.location.port === '3000' ? window.location.origin : 'http://localhost:3000')
         : SERVER_URL;
-    const socket = io(SERVER_URL);
+    const socket = io("https://two048-online-quo3.onrender.com");
 
     // ===== 2. DOM Elements =====
     const nameModal = document.querySelector('#name-modal');
